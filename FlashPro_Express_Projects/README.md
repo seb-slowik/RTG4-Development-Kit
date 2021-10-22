@@ -1,6 +1,6 @@
 # RTG4 Development Kit FPGA Programming Files
 
-This folder contains FlashPro Express v12.6 projects for the RTG4 Development Kit Mi-V sample designs.
+This folder contains FlashPro Express v2021.2 projects for the RTG4 Development Kit Mi-V sample designs.
 
 ## FlashPro Express
 The programming files contained under this folder were exported from the designs in the Libero_Projects folder in this repository. Select the desired programming file (.job) and program your device using FlashPro Express.
@@ -21,7 +21,7 @@ The programming files contained under this folder were exported from the designs
 
 ## Design Features
 The Libero designs include the following features:
-* A soft RISC-V processor
+* A soft RISC-V [processor](https://github.com/RISCV-on-Microsemi-FPGA/CPUs)
 * A RISC-V debug block allowing on-target debug using SoftConsole
 * The operating frequency of the design is 50MHz
 * Target memory is SRAM (32kB)
