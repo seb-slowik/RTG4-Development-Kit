@@ -1,6 +1,6 @@
 #RTG4 Dev Kit = RTG4150-1657CG
 #Libero's TCL top level script
-# Core: MiV_RV32IMAF_L1_AHB
+# Core: MIV_RV32IMAF_L1_AHB
 #
 #This Tcl file sources other Tcl files to build the design(on which recursive export is run) in a bottom-up fashion
 
@@ -107,16 +107,16 @@ sd_mark_pins_unused -sd_name ${sd_name} -pin_names {CoreUARTapb_0:FRAMING_ERR}
 
 
 
-# Add MiV_RV32IMAF_L1_AHB_0 instance
-sd_instantiate_component -sd_name ${sd_name} -component_name {MIV_RV32IMAF_L1_AHB_0} -instance_name {MiV_RV32IMAF_L1_AHB_0}
-sd_create_pin_slices -sd_name ${sd_name} -pin_name {MiV_RV32IMAF_L1_AHB_0:IRQ} -pin_slices {[28:0]}
-sd_connect_pins_to_constant -sd_name ${sd_name} -pin_names {MiV_RV32IMAF_L1_AHB_0:IRQ[28:0]} -value {GND}
-sd_create_pin_slices -sd_name ${sd_name} -pin_name {MiV_RV32IMAF_L1_AHB_0:IRQ} -pin_slices {[29]}
-sd_create_pin_slices -sd_name ${sd_name} -pin_name {MiV_RV32IMAF_L1_AHB_0:IRQ} -pin_slices {[30]}
-sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MiV_RV32IMAF_L1_AHB_0:AHB_MST_MEM_HSEL}
-sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MiV_RV32IMAF_L1_AHB_0:AHB_MST_MMIO_HSEL}
-sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MiV_RV32IMAF_L1_AHB_0:DRV_TDO}
-sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MiV_RV32IMAF_L1_AHB_0:EXT_RESETN}
+# Add MIV_RV32IMAF_L1_AHB_0 instance
+sd_instantiate_component -sd_name ${sd_name} -component_name {MIV_RV32IMAF_L1_AHB_0} -instance_name {MIV_RV32IMAF_L1_AHB_0}
+sd_create_pin_slices -sd_name ${sd_name} -pin_name {MIV_RV32IMAF_L1_AHB_0:IRQ} -pin_slices {[28:0]}
+sd_connect_pins_to_constant -sd_name ${sd_name} -pin_names {MIV_RV32IMAF_L1_AHB_0:IRQ[28:0]} -value {GND}
+sd_create_pin_slices -sd_name ${sd_name} -pin_name {MIV_RV32IMAF_L1_AHB_0:IRQ} -pin_slices {[29]}
+sd_create_pin_slices -sd_name ${sd_name} -pin_name {MIV_RV32IMAF_L1_AHB_0:IRQ} -pin_slices {[30]}
+sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MIV_RV32IMAF_L1_AHB_0:AHB_MST_MEM_HSEL}
+sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MIV_RV32IMAF_L1_AHB_0:AHB_MST_MMIO_HSEL}
+sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MIV_RV32IMAF_L1_AHB_0:DRV_TDO}
+sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MIV_RV32IMAF_L1_AHB_0:EXT_RESETN}
 
 
 
@@ -156,15 +156,15 @@ sd_connect_pins -sd_name ${sd_name} -pin_names {"RCOSC_50MHZ_0:CLKOUT" "RTG4FCCC
 sd_connect_pins -sd_name ${sd_name} -pin_names {"AND2_0:Y" "reset_synchronizer_0:reset" }
 sd_connect_pins -sd_name ${sd_name} -pin_names {"AND2_0:B" "RTG4FCCC_0:LOCK" }
 sd_connect_pins -sd_name ${sd_name} -pin_names {"AND2_0:A" "SYSRESET_0:POWER_ON_RESET_N" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"MiV_RV32IMAF_L1_AHB_0:TCK" "CoreJTAGDebug_1:TGT_TCK_0" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"MiV_RV32IMAF_L1_AHB_0:TDI" "CoreJTAGDebug_1:TGT_TDI_0" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"MiV_RV32IMAF_L1_AHB_0:TMS" "CoreJTAGDebug_1:TGT_TMS_0" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"MiV_RV32IMAF_L1_AHB_0:TRST" "CoreJTAGDebug_1:TGT_TRSTB_0" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"reset_synchronizer_0:reset_sync" "COREAHBTOAPB3_0:HRESETN" "CoreTimer_1:PRESETn" "MiV_RV32IMAF_L1_AHB_0:RESETN" "RTG4_SRAM_0:HRESETN" "CoreGPIO_IN:PRESETN" "CoreGPIO_OUT:PRESETN" "CoreAHBL_0:HRESETN" "CoreTimer_0:PRESETn" "CoreUARTapb_0:PRESETN" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"MiV_RV32IMAF_L1_AHB_0:IRQ[29]" "CoreTimer_0:TIMINT" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"CoreTimer_1:TIMINT" "MiV_RV32IMAF_L1_AHB_0:IRQ[30]" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"MiV_RV32IMAF_L1_AHB_0:TDO" "CoreJTAGDebug_1:TGT_TDO_0" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"reset_synchronizer_0:clock" "COREAHBTOAPB3_0:HCLK" "RTG4FCCC_0:GL0" "CoreTimer_1:PCLK" "MiV_RV32IMAF_L1_AHB_0:CLK" "RTG4_SRAM_0:HCLK" "CoreUARTapb_0:PCLK" "CoreGPIO_IN:PCLK" "CoreGPIO_OUT:PCLK" "CoreAHBL_0:HCLK" "CoreTimer_0:PCLK" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"MIV_RV32IMAF_L1_AHB_0:TCK" "CoreJTAGDebug_1:TGT_TCK_0" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"MIV_RV32IMAF_L1_AHB_0:TDI" "CoreJTAGDebug_1:TGT_TDI_0" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"MIV_RV32IMAF_L1_AHB_0:TMS" "CoreJTAGDebug_1:TGT_TMS_0" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"MIV_RV32IMAF_L1_AHB_0:TRST" "CoreJTAGDebug_1:TGT_TRST_0" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"reset_synchronizer_0:reset_sync" "COREAHBTOAPB3_0:HRESETN" "CoreTimer_1:PRESETn" "MIV_RV32IMAF_L1_AHB_0:RESETN" "RTG4_SRAM_0:HRESETN" "CoreGPIO_IN:PRESETN" "CoreGPIO_OUT:PRESETN" "CoreAHBL_0:HRESETN" "CoreTimer_0:PRESETn" "CoreUARTapb_0:PRESETN" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"MIV_RV32IMAF_L1_AHB_0:IRQ[29]" "CoreTimer_0:TIMINT" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"CoreTimer_1:TIMINT" "MIV_RV32IMAF_L1_AHB_0:IRQ[30]" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"MIV_RV32IMAF_L1_AHB_0:TDO" "CoreJTAGDebug_1:TGT_TDO_0" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"reset_synchronizer_0:clock" "COREAHBTOAPB3_0:HCLK" "RTG4FCCC_0:GL0" "CoreTimer_1:PCLK" "MIV_RV32IMAF_L1_AHB_0:CLK" "RTG4_SRAM_0:HCLK" "CoreUARTapb_0:PCLK" "CoreGPIO_IN:PCLK" "CoreGPIO_OUT:PCLK" "CoreAHBL_0:HCLK" "CoreTimer_0:PCLK" }
 sd_connect_pins -sd_name ${sd_name} -pin_names {"CoreUARTapb_0:RX" "RX" }
 sd_connect_pins -sd_name ${sd_name} -pin_names {"TCK" "CoreJTAGDebug_1:TCK" }
 sd_connect_pins -sd_name ${sd_name} -pin_names {"CoreJTAGDebug_1:TDI" "TDI" }
@@ -190,8 +190,8 @@ sd_connect_pins -sd_name ${sd_name} -pin_names {"CoreAPB3_0:APBmslave2" "CoreGPI
 sd_connect_pins -sd_name ${sd_name} -pin_names {"CoreAPB3_0:APBmslave3" "CoreTimer_0:APBslave" }
 sd_connect_pins -sd_name ${sd_name} -pin_names {"CoreAPB3_0:APBmslave4" "CoreTimer_1:APBslave" }
 sd_connect_pins -sd_name ${sd_name} -pin_names {"CoreAPB3_0:APBmslave5" "CoreGPIO_OUT:APB_bif" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"MiV_RV32IMAF_L1_AHB_0:AHB_MST_MEM" "CoreAHBL_0:AHBmmaster1" }
-sd_connect_pins -sd_name ${sd_name} -pin_names {"CoreAHBL_0:AHBmmaster0" "MiV_RV32IMAF_L1_AHB_0:AHB_MST_MMIO" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"MIV_RV32IMAF_L1_AHB_0:AHB_MST_MEM" "CoreAHBL_0:AHBmmaster1" }
+sd_connect_pins -sd_name ${sd_name} -pin_names {"CoreAHBL_0:AHBmmaster0" "MIV_RV32IMAF_L1_AHB_0:AHB_MST_MMIO" }
 
 # Re-enable auto promotion of pins of type 'pad'
 auto_promote_pad_pins -promote_all 1
