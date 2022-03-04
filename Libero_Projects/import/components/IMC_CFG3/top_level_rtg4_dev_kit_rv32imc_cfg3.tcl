@@ -1,6 +1,7 @@
-#RTG4 Dev Kit = RTG4150-1657CG
+#Hardware     : RTG4 Dev Kit (rev B (RTG4150-1657CG))
+#MIV Cores    : MIV_RV32
+#
 #Libero's TCL top level script
-# Core: MIV_RV32IMC
 #
 #This Tcl file sources other Tcl files to build the design(on which recursive export is run) in a bottom-up fashion
 
@@ -43,9 +44,9 @@ sd_create_scalar_port -sd_name ${sd_name} -port_name {LED_2} -port_direction {OU
 sd_create_scalar_port -sd_name ${sd_name} -port_name {LED_3} -port_direction {OUT}
 sd_create_scalar_port -sd_name ${sd_name} -port_name {LED_4} -port_direction {OUT}
 
+
 # Add CoreAPB3_0 instance
 sd_instantiate_component -sd_name ${sd_name} -component_name {CoreAPB3_0} -instance_name {CoreAPB3_0}
-
 
 
 # Add CoreGPIO_IN instance
@@ -54,7 +55,6 @@ sd_mark_pins_unused -sd_name ${sd_name} -pin_names {CoreGPIO_IN:INT}
 sd_mark_pins_unused -sd_name ${sd_name} -pin_names {CoreGPIO_IN:GPIO_OUT}
 sd_create_pin_slices -sd_name ${sd_name} -pin_name {CoreGPIO_IN:GPIO_IN} -pin_slices {"[0:0]"} 
 sd_create_pin_slices -sd_name ${sd_name} -pin_name {CoreGPIO_IN:GPIO_IN} -pin_slices {"[1:1]"} 
-
 
 
 # Add CoreGPIO_OUT instance
@@ -67,20 +67,16 @@ sd_create_pin_slices -sd_name ${sd_name} -pin_name {CoreGPIO_OUT:GPIO_OUT} -pin_
 sd_create_pin_slices -sd_name ${sd_name} -pin_name {CoreGPIO_OUT:GPIO_OUT} -pin_slices {"[3:3]"} 
 
 
-
 # Add CoreJTAGDebug_0 instance
 sd_instantiate_component -sd_name ${sd_name} -component_name {CoreJTAGDebug_0} -instance_name {CoreJTAGDebug_0}
-
 
 
 # Add CoreTimer_0 instance
 sd_instantiate_component -sd_name ${sd_name} -component_name {CoreTimer_0} -instance_name {CoreTimer_0}
 
 
-
 # Add CoreTimer_1 instance
 sd_instantiate_component -sd_name ${sd_name} -component_name {CoreTimer_1} -instance_name {CoreTimer_1}
-
 
 
 # Add CoreUARTapb_0 instance
@@ -92,7 +88,6 @@ sd_mark_pins_unused -sd_name ${sd_name} -pin_names {CoreUARTapb_0:OVERFLOW}
 sd_mark_pins_unused -sd_name ${sd_name} -pin_names {CoreUARTapb_0:FRAMING_ERR}
 
 
-
 # Add MIV_RV32_CFG3 instance
 sd_instantiate_component -sd_name ${sd_name} -component_name {MIV_RV32_CFG3} -instance_name {MIV_RV32_CFG3}
 sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MIV_RV32_CFG3:TIME_COUNT_OUT}
@@ -100,30 +95,24 @@ sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MIV_RV32_CFG3:JTAG_TDO_DR}
 sd_mark_pins_unused -sd_name ${sd_name} -pin_names {MIV_RV32_CFG3:EXT_RESETN}
 
 
-
 # Add AND2_0 instance
 sd_instantiate_macro -sd_name ${sd_name} -macro_name {AND2} -instance_name {AND2_0}
-
 
 
 # Add RCOSC_50MHZ_0 instance
 sd_instantiate_macro -sd_name ${sd_name} -macro_name {RCOSC_50MHZ} -instance_name {RCOSC_50MHZ_0}
 
 
-
 # Add reset_synchronizer_0 instance
 sd_instantiate_hdl_module -sd_name ${sd_name} -hdl_module_name {reset_synchronizer} -hdl_file {hdl\reset_synchronizer.v} -instance_name {reset_synchronizer_0}
-
 
 
 # Add RTG4FCCC_0 instance
 sd_instantiate_component -sd_name ${sd_name} -component_name {RTG4FCCC_0} -instance_name {RTG4FCCC_0}
 
 
-
 # Add SYSRESET_0 instance
 sd_instantiate_macro -sd_name ${sd_name} -macro_name {SYSRESET} -instance_name {SYSRESET_0}
-
 
 
 # Add scalar net connections
@@ -167,7 +156,10 @@ sd_connect_pins -sd_name ${sd_name} -pin_names {"MIV_RV32_CFG3:APB_MSTR" "CoreAP
 
 # Re-enable auto promotion of pins of type 'pad'
 auto_promote_pad_pins -promote_all 1
-# Save the smartDesign
+# Re-arrange SmartDesign layout
+sd_reset_layout -sd_name ${sd_name}
+# Save the SmartDesign
 save_smartdesign -sd_name ${sd_name}
-# Generate SmartDesign BaseDesign
+# Generate the SmartDesign
 generate_component -component_name ${sd_name}
+
