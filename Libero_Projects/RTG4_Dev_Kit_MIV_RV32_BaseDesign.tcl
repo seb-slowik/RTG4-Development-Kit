@@ -77,20 +77,16 @@ proc config2_not_available { }\
 }
 
 
-proc download_cores_all_cfgs  { }\
+proc download_required_direct_cores  { }\
 {
 	download_core -vlnv {Actel:DirectCore:CoreAPB3:4.2.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:COREAHBTOAPB3:3.2.101} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:CoreAHBLite:5.5.101} -location {www.microchip-ip.com/repositories/DirectCore}
-	download_core -vlnv {Actel:SystemBuilder:RTG4_SRAM_AHBL_AXI:1.0.117} -location {www.microchip-ip.com/repositories/SgCore}
-	download_core -vlnv {Actel:SgCore:OSC:2.0.101} -location {www.microchip-ip.com/repositories/SgCore}
-	download_core -vlnv {Actel:SgCore:FCCC:2.0.201} -location {www.microchip-ip.com/repositories/SgCore}
 	download_core -vlnv {Actel:DirectCore:CoreUARTapb:5.7.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:CoreTimer:2.0.103} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:COREJTAGDEBUG:4.0.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:CoreGPIO:3.2.102} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:COREAXITOAHBL:3.6.101} -location {www.microchip-ip.com/repositories/DirectCore}
-	#download_core -vlnv {Actel:DirectCore:COREAXI4INTERCONNECT:2.8.103} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Microsemi:MiV:MIV_RV32IMA_L1_AHB:2.3.100} -location {www.microchip-ip.com/repositories/DirectCore} 
 	download_core -vlnv {Microsemi:MiV:MIV_RV32IMA_L1_AXI:2.1.100} -location {www.microchip-ip.com/repositories/DirectCore} 
@@ -99,11 +95,13 @@ proc download_cores_all_cfgs  { }\
 
 proc pre_configure_place_and_route { }\
 {
+	#Configuring Place_and_Route tool for a timing pass.
 	configure_tool -name {PLACEROUTE} -params {EFFORT_LEVEL:true} -params {REPAIR_MIN_DELAY:true} -params {TDPR:true} -params {IOREG_COMBINING:true}
 }
 
 proc run_verify_timing { }\
 {
+	#Runs Verify Timing tool
 	run_tool -name {VERIFYTIMING}	
 }
 
@@ -114,7 +112,7 @@ if {"$config" == "CFG1"} then {
 		create_new_project_label
 		new_project -location  $project_dir_CFG1 -name $Libero_project_name_CFG1 -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
 		project_settings -enable_set_mitigation 0
-		download_cores_all_cfgs
+		download_required_direct_cores
 		source ./import/components/IMC_CFG1/import_component_and_constraints_rtg4_dev_kit_rv32imc_cfg1.tcl
 		save_project
         base_design_built
@@ -126,7 +124,7 @@ if {"$config" == "CFG1"} then {
 		create_new_project_label
 		new_project -location  $project_dir_CFG2 -name $Libero_project_name_CFG2 -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
 		project_settings -enable_set_mitigation 0
-		download_cores_all_cfgs
+		download_required_direct_cores
 		source ./import/components/IMC_CFG2/import_component_and_constraints_rtg4_dev_kit_rv32imc_cfg2.tcl
 		save_project
         base_design_built
@@ -138,7 +136,7 @@ if {"$config" == "CFG1"} then {
 		create_new_project_label
 		new_project -location  $project_dir_CFG3 -name $Libero_project_name_CFG3 -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
 		project_settings -enable_set_mitigation 0
-		download_cores_all_cfgs
+		download_required_direct_cores
 		source ./import/components/IMC_CFG3/import_component_and_constraints_rtg4_dev_kit_rv32imc_cfg3.tcl
 		save_project
         base_design_built
@@ -153,7 +151,7 @@ if {"$config" == "CFG1"} then {
 		create_new_project_label
 		new_project -location  $project_dir_CFG1 -name $Libero_project_name_CFG1 -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
 		project_settings -enable_set_mitigation 1
-		download_cores_all_cfgs
+		download_required_direct_cores
 		source ./import/components/IMC_CFG1/import_component_and_constraints_rtg4_dev_kit_rv32imc_cfg1.tcl
 		save_project
         base_design_built
