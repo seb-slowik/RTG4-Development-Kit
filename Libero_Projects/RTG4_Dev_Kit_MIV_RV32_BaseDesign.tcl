@@ -1,92 +1,115 @@
-set project_folder_name_CFG1 MIV_CFG1_BD
-set project_dir_CFG1 "./$project_folder_name_CFG1"
-set Libero_project_name_CFG1 RTG4_Dev_Kit_MIV_RV32_CFG1_BaseDesign
-
-set project_folder_name_CFG2 MIV_CFG2_BD
-set project_dir_CFG2 "./$project_folder_name_CFG2"
-set Libero_project_name_CFG2 RTG4_Dev_Kit_MIV_RV32_CFG2_BaseDesign
-
-set project_folder_name_CFG3 MIV_CFG3_BD
-set project_dir_CFG3 "./$project_folder_name_CFG3"
-set Libero_project_name_CFG3 RTG4_Dev_Kit_MIV_RV32_CFG3_BaseDesign
-
 set config [string toupper [lindex $argv 0]]
 set design_flow_stage [string toupper [lindex $argv 1]]
+set die_variant [string toupper [lindex $argv 2]]
 
+set hw_platform RTG4_Dev_Kit
+set soft_cpu MIV_RV32
+set sd_reference BaseDesign
 
-proc create_new_project_label { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-	puts "Creating a new project for the 'RTG4_Dev_Kit' board."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+#
+#1. ES device is not supported in these scripts
+
+#Edge case 1: If the argv0 is empty, assume CFG1
+if {"$config" == ""} then {
+	set config "CFG1"
 }
 
-proc project_exists { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-	puts "Error: A project exists for the 'RTG4_Dev_Kit' with this configuration."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+#Edge case 2: If user passes an argument to argv1, intended for argv2
+if {"$design_flow_stage" == "ES"} then {
+	set die_variant "ES"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nInfo: The 2nd Argument was used to pass in the die type. \
+		  \r\n------------------------------------------------------------------------------- \n"
 }
 
-proc no_first_argument_entered { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "No 1st Argument has been entered."
-	puts "Enter the 1st Argument responsible for type of design configuration -'CFG1..CFGn' " 
-	puts "Default 'CFG1' design has been selected."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+#Edge case 3: If the argv2 is empty, assume PS
+if {"$die_variant" == ""} then {
+	set die_variant "PS"
+} elseif {"$die_variant" == "ES"} then {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nError: Engineering Sample (ES) die not supported in these scripts. \
+		  \r\n------------------------------------------------------------------------------- \n"
 }
 
-proc invalid_first_argument { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Wrong 1st Argument has been entered."
-    puts "Make sure you enter a valid first argument -'CFG1..CFGn'."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+append target_board $hw_platform _ $die_variant
+append project_folder_name MIV_ $config _BD
+set project_dir "./$project_folder_name"
+append project_name $target_board _ $soft_cpu _ $config _ $sd_reference
+
+proc create_new_project_label { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nCreating a new project for the 'RTG4_Dev_Kit' board. \
+		  \r\n------------------------------------------------------------------------------- \n"
 }
 
-proc no_second_argument_entered { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "No 2nd Argument has been entered."
-	puts "Enter the 2nd Argument after the 1st to be taken further in the Design Flow." 
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+proc project_exists { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nError: A project exists for the 'RTG4_Dev_Kit' with this configuration. \
+		  \r\n------------------------------------------------------------------------------- \n"
 }
 
-proc invalid_second_argument { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Wrong 2nd Argument has been entered."
-    puts "Make sure you enter a valid 2nd argument -'Synthesize...Export_Programming_File'."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+proc no_first_argument_entered { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nInfo: No 1st Argument has been entered. \
+		  \r\nEnter the 1st Argument responsible for type of design configuration -'CFG1..CFGn' \
+		  \r\nDefault 'CFG1' design has been selected. \
+		  \r\n------------------------------------------------------------------------------- \n"
 }
 
-proc  base_design_built { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-	puts "BaseDesign built."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+proc invalid_first_argument { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nError: Wrong 1st Argument has been entered. No valid configuration detected. \
+		  \r\nInfo: Make sure you enter a valid first argument -'CFG1..CFGn'. \
+		  \r\n------------------------------------------------------------------------------- \n"
 }
 
-proc config2_not_available { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "RTG4_Dev_Kit_MIV_RV32_CFG2_BaseDesign is not available in this release."
-    puts "Try a different BaseDesign configuration that uses MIV_RV32."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+proc no_second_argument_entered { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nInfo: No adequate 2nd Argument has been entered. \
+		  \r\nInfo: nEnter the 2nd Argument after the 1st to be taken further in the Design Flow. \
+		  \r\nInfo: A 3rd Argument also needs to be present if targeting an 'ES' die type. \
+		  \r\n------------------------------------------------------------------------------- \n"
 }
 
+proc invalid_second_argument { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nWarning: Wrong 2nd Argument has been entered. \
+		  \r\nInfo: Make sure you enter a valid 2nd argument -'Synthesize...Export_Programming_File'.\
+		  \r\n------------------------------------------------------------------------------- \n"
+}
 
-proc download_required_direct_cores  { }\
-{
-	download_core -vlnv {Actel:DirectCore:CoreAPB3:4.2.100} -location {www.microchip-ip.com/repositories/DirectCore}
-	download_core -vlnv {Actel:DirectCore:COREAHBTOAPB3:3.2.101} -location {www.microchip-ip.com/repositories/DirectCore}
-	download_core -vlnv {Actel:DirectCore:CoreAHBLite:5.5.101} -location {www.microchip-ip.com/repositories/DirectCore}
+proc no_third_argument_entered { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nInfo: No 3rd Argument has been entered. \
+		  \r\nInfo: The default die type -'PS' will be used as target \
+		  \r\nInfo: Enter the optional 3rd Argument after the 2nd to target build for 'ES' die \
+		  \r\n------------------------------------------------------------------------------- \n"
+}
+
+proc invalid_third_argument { } {
+	puts "\n------------------------------------------------------------------------------- \
+          \r\nWarning: Wrong 3rd Argument has been entered. \
+          \r\nInfo: Make sure you enter a valid 3rd argument -'PS' or 'ES'. \
+		  \r\nInfo: Building for default, production silicon 'PS' die target \
+		  \r\n------------------------------------------------------------------------------- \n"
+}
+
+proc  base_design_built { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nInfo: BaseDesign built. \
+		  \r\n------------------------------------------------------------------------------- \n"
+}
+
+proc download_required_direct_cores  { } {
 	download_core -vlnv {Actel:DirectCore:CoreUARTapb:5.7.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:CoreTimer:2.0.103} -location {www.microchip-ip.com/repositories/DirectCore}
+	download_core -vlnv {Actel:DirectCore:CORERESET_PF:2.3.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:COREJTAGDEBUG:4.0.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:CoreGPIO:3.2.102} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:COREAXITOAHBL:3.6.101} -location {www.microchip-ip.com/repositories/DirectCore}
+	download_core -vlnv {Actel:DirectCore:CoreAPB3:4.2.100} -location {www.microchip-ip.com/repositories/DirectCore}
+	download_core -vlnv {Actel:DirectCore:COREAHBTOAPB3:3.2.101} -location {www.microchip-ip.com/repositories/DirectCore}
+	download_core -vlnv {Actel:DirectCore:CoreAHBLite:5.6.105} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Microsemi:MiV:MIV_RV32IMA_L1_AHB:2.3.100} -location {www.microchip-ip.com/repositories/DirectCore} 
 	download_core -vlnv {Microsemi:MiV:MIV_RV32IMA_L1_AXI:2.1.100} -location {www.microchip-ip.com/repositories/DirectCore} 
@@ -104,14 +127,20 @@ proc run_verify_timing { }\
 	#Runs Verify Timing tool
 	run_tool -name {VERIFYTIMING}	
 }
-
+		
 if {"$config" == "CFG1"} then {
-	if {[file exists $project_dir_CFG1] == 1} then {
+	if {[file exists $project_dir] == 1} then {
 		project_exists
 	} else {
 		create_new_project_label
-		new_project -location  $project_dir_CFG1 -name $Libero_project_name_CFG1 -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
-		project_settings -enable_set_mitigation 0
+		if {"$die_variant" == "ES"} then {
+			invalid_third_argument
+		} elseif {"$die_variant" != "PS"} then {
+			invalid_third_argument
+		} else {
+			new_project -location  $project_dir -name $project_dir -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
+			project_settings -enable_set_mitigation 0
+		}
 		download_required_direct_cores
 		source ./import/components/IMC_CFG1/import_component_and_constraints_rtg4_dev_kit_rv32imc_cfg1.tcl
 		save_project
@@ -122,8 +151,14 @@ if {"$config" == "CFG1"} then {
 		project_exists
 	} else {
 		create_new_project_label
-		new_project -location  $project_dir_CFG2 -name $Libero_project_name_CFG2 -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
-		project_settings -enable_set_mitigation 0
+		if {"$die_variant" == "ES"} then {
+			invalid_third_argument
+		} elseif {"$die_variant" != "PS"} then {
+			invalid_third_argument
+		} else {
+			new_project -location  $project_dir -name $project_dir -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
+			project_settings -enable_set_mitigation 0
+		}
 		download_required_direct_cores
 		source ./import/components/IMC_CFG2/import_component_and_constraints_rtg4_dev_kit_rv32imc_cfg2.tcl
 		save_project
@@ -134,8 +169,14 @@ if {"$config" == "CFG1"} then {
 		project_exists
 	} else {
 		create_new_project_label
-		new_project -location  $project_dir_CFG3 -name $Libero_project_name_CFG3 -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
-		project_settings -enable_set_mitigation 0
+		if {"$die_variant" == "ES"} then {
+			invalid_third_argument
+		} elseif {"$die_variant" != "PS"} then {
+			invalid_third_argument
+		} else {
+			new_project -location  $project_dir -name $project_dir -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
+			project_settings -enable_set_mitigation 0
+		}
 		download_required_direct_cores
 		source ./import/components/IMC_CFG3/import_component_and_constraints_rtg4_dev_kit_rv32imc_cfg3.tcl
 		save_project
@@ -149,8 +190,14 @@ if {"$config" == "CFG1"} then {
 	} else {
 		no_first_argument_entered
 		create_new_project_label
-		new_project -location  $project_dir_CFG1 -name $Libero_project_name_CFG1 -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
-		project_settings -enable_set_mitigation 1
+		if {"$die_variant" == "ES"} then {
+			invalid_third_argument
+		} elseif {"$die_variant" != "PS"} then {
+			invalid_third_argument
+		} else {
+			new_project -location  $project_dir -name $project_dir -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
+			project_settings -enable_set_mitigation 0
+		}
 		download_required_direct_cores
 		source ./import/components/IMC_CFG1/import_component_and_constraints_rtg4_dev_kit_rv32imc_cfg1.tcl
 		save_project
@@ -161,86 +208,72 @@ if {"$config" == "CFG1"} then {
 pre_configure_place_and_route
 
 if {"$design_flow_stage" == "SYNTHESIZE"} then {
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Begin Synthesis..."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nBegin Synthesis... \
+		  \r\n------------------------------------------------------------------------------- \n"
 
     run_tool -name {SYNTHESIZE}
     save_project
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Synthesis Complete."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nSynthesis Complete. \
+		  \r\n------------------------------------------------------------------------------- \n"
 
 
 } elseif {"$design_flow_stage" == "PLACE_AND_ROUTE"} then {
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Begin Place and Route..."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nBegin Place and Route... \
+		  \r\n------------------------------------------------------------------------------- \n"
 
 	run_verify_timing
 	save_project
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Place and Route Complete."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nPlace and Route Complete. \
+		  \r\n------------------------------------------------------------------------------- \n"
 
 
 } elseif {"$design_flow_stage" == "GENERATE_BITSTREAM"} then {
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Generating Bitstream..."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nGenerating Bitstream... \
+		  \r\n------------------------------------------------------------------------------- \n"
 
 	run_verify_timing
     run_tool -name {GENERATEPROGRAMMINGDATA}
     run_tool -name {GENERATEPROGRAMMINGFILE}
     save_project
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Bitstream Generated."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nBitstream Generated. \
+		  \r\n------------------------------------------------------------------------------- \n"
 
 
 } elseif {"$design_flow_stage" == "EXPORT_PROGRAMMING_FILE"} then {
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Exporting Programming Files..."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nExporting Programming Files... \
+		  \r\n------------------------------------------------------------------------------- \n"
 
 	run_verify_timing
 	run_tool -name {GENERATEPROGRAMMINGFILE}
 
-	if {"$config" == "CFG1"} then {
-		export_prog_job \
-			-job_file_name {RTG4_Dev_Kit_MIV_RV32_CFG1_BaseDesign} \
-			-export_dir {./MIV_CFG1_BD/designer/BaseDesign/export} \
-			-force_rtg4_otp 0 \
-			-design_bitstream_format {PPD} 
-		save_project
-	} elseif {"$config" == "CFG2"} then {
-		export_prog_job \
-			-job_file_name {RTG4_Dev_Kit_MIV_RV32_CFG2_BaseDesign} \
-			-export_dir {./MIV_CFG2_BD/designer/BaseDesign/export} \
-			-force_rtg4_otp 0 \
-			-design_bitstream_format {PPD} 
-		save_project
-	} else {
-		export_prog_job \
-			-job_file_name {RTG4_Dev_Kit_MIV_RV32_CFG3_BaseDesign} \
-			-export_dir {./MIV_CFG3_BD/designer/BaseDesign/export} \
-			-force_rtg4_otp 0 \
-			-design_bitstream_format {PPD} 
-		save_project
-	}
+	export_prog_job \
+		-job_file_name $project_name \
+		-export_dir $project_dir/designer/BaseDesign/export \
+		-force_rtg4_otp 0 \
+		-design_bitstream_format {PPD} 
+	save_project
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Programming Files Exported."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nProgramming Files Exported. \
+		  \r\n------------------------------------------------------------------------------- \n"
 
 } elseif {"$design_flow_stage" != ""} then {
-	invalid_second_argument
+	if {"$design_flow_stage" != "PS"} then {
+		invalid_second_argument
+	}
 } else {
 	no_second_argument_entered
 }
