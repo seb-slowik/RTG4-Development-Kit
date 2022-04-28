@@ -6,8 +6,7 @@ set hw_platform RTG4_Dev_Kit
 set soft_cpu MIV_RV32IMA
 set sd_reference BaseDesign
 
-#
-#1. ES device is not supported in these scripts
+#ES device is not supported in these scripts
 
 #Edge case 1: If the argv0 is empty, assume CFG1
 if {"$config" == ""} then {
@@ -22,13 +21,13 @@ if {"$design_flow_stage" == "ES"} then {
 		  \r\n------------------------------------------------------------------------------- \n"
 }
 
-#Edge case 3: If the argv2 is empty, assume PS
-if {"$die_variant" == ""} then {
-	set die_variant "PS"
-} elseif {"$die_variant" == "ES"} then {
+#Edge case 2: If user tries to build the design for an 'ES' die target
+if {"$die_variant" == "ES"} {
 	puts "\n------------------------------------------------------------------------------- \
 		  \r\nError: Engineering Sample (ES) die not supported in these scripts. \
 		  \r\n------------------------------------------------------------------------------- \n"
+} elseif {"$die_variant" == ""} {
+	set die_variant "PS"
 }
 
 append target_board $hw_platform _ $die_variant
@@ -126,8 +125,8 @@ proc download_required_direct_cores  { }\
 
 proc pre_configure_place_and_route { }\
 {
-    #Configuring Place_and_Route tool for a timing pass.
-    configure_tool -name {PLACEROUTE} -params {TDPR:true} -params {IOREG_COMBINING:true} -params {INCRPLACEANDROUTE:false} -params {REPAIR_MIN_DELAY:true}
+	#Configuring Place_and_Route tool for a timing pass.
+	configure_tool -name {PLACEROUTE} -params {EFFORT_LEVEL:false} -params {REPAIR_MIN_DELAY:true} -params {TDPR:true} -params {IOREG_COMBINING:false}
 }
 
 proc run_verify_timing { }\
@@ -137,7 +136,7 @@ proc run_verify_timing { }\
 }
 
 if {"$config" == "CFG1"} then {
-	if {[file exists $project_dir_CFG1] == 1} then {
+	if {[file exists $project_dir] == 1} then {
 		project_exists
 	} else {
 		create_new_project_label
@@ -146,15 +145,15 @@ if {"$config" == "CFG1"} then {
 		} elseif {"$die_variant" != "PS"} then {
 			invalid_third_argument
 		} else {
-			new_project -location  $project_dir -name $project_dir -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
+			new_project -location  $project_dir -name $project_name -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
 		}
 		download_required_direct_cores
-		source ./import/components/IMA_CFG1/import_component_and_constraints_rtg4_dev_kit_rv32ima_cfg1.tcl
+		source ./import/components/IMA_CFG1/import_sd_and_constraints_rtg4_ima_cfg1.tcl
 		save_project
         base_design_built
 	}
 } elseif {"$config" == "CFG2"} then {
-	if {[file exists $project_dir_CFG2] == 1} then {
+	if {[file exists $project_dir] == 1} then {
 		project_exists
 	} else {
 		create_new_project_label
@@ -163,17 +162,17 @@ if {"$config" == "CFG1"} then {
 		} elseif {"$die_variant" != "PS"} then {
 			invalid_third_argument
 		} else {
-			new_project -location  $project_dir -name $project_dir -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
+			new_project -location  $project_dir -name $project_name -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
 		}
 		download_required_direct_cores
-		source ./import/components/IMA_CFG2/import_component_and_constraints_rtg4_dev_kit_rv32ima_cfg2.tcl
+		source ./import/components/IMA_CFG2/import_sd_and_constraints_rtg4_ima_cfg2.tcl
 		save_project
         base_design_built
 	}
 } elseif {"$config" != ""} then {
 		invalid_first_argument
 } else {
-	if {[file exists $project_dir_CFG1] == 1} then {
+	if {[file exists $project_dir] == 1} then {
 		project_exists
 	} else {
 		no_first_argument_entered
@@ -183,10 +182,10 @@ if {"$config" == "CFG1"} then {
 		} elseif {"$die_variant" != "PS"} then {
 			invalid_third_argument
 		} else {
-			new_project -location  $project_dir -name $project_dir -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
+			new_project -location  $project_dir -name $project_name -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
 		}
 		download_required_direct_cores
-		source ./import/components/IMA_CFG1/import_component_and_constraints_rtg4_dev_kit_rv32ima_cfg1.tcl
+		source ./import/components/IMA_CFG1/import_sd_and_constraints_rtg4_ima_cfg1.tcl
 		save_project
         base_design_built
 	}
