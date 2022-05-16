@@ -1,14 +1,15 @@
 # RTG4 Development Kit Mi-V Sample FPGA Designs
 This folder contains Tcl scripts that build Libero SoC v2022.1 design projects for the RTG4 Development Kit. These scripts are executed in Libero SoC to generate the sample designs. All cores boot from memory at 0x8000_0000.
 
+> This design only supports the production silicon (PS) die
 
-#### RTG4_Dev_Kit_MIV_RV32_BaseDesign (ES die type not supported)
+#### RTG4_Dev_Kit_MIV_RV32_BaseDesign
 
 | Config  | Description|
 | :------:|:----------------------------------------|
 | CFG1    | This design uses the MIV_RV32 core configured as follows: <ul><li>RISC-V Extensions: IMC</li><li>Multiplier: MACC (Pipelined)</li><li>Interfaces: AHB Master (mirrored), APB3 Master</li><li>Internal IRQs: 1</li><li>TCM: disabled</li><li>System Timer: Internal MTIME enabled, Internal MTIME IRQ enabled</li><li>Debug: enabled</li></ul>|
 | CFG2    | This design uses the MIV_RV32 core configured as follows: <ul><li>RISC-V Extensions: IM</li><li>Multiplier: Fabric</li><li>Interfaces: AXI4 Master (mirrored), APB3 Master</li><li>Internal IRQs: 1</li><li>TCM: disabled</li><li>System Timer: Internal MTIME enabled, Internal MTIME IRQ enabled</li><li>Debug: enabled* </li></ul>|
-| CFG3    | This design uses the MIV_RV32 core configured as follows: <ul><li>RISC-V Extensions: I</li><li>Multiplier: none</li><li>Interfaces: APB3 Master</li><li>Internal IRQs: 1</li><li>TCM: Enabled</li><li>System Timer: Internal MTIME enabled, Internal MTIME IRQ enabled</li><li>Debug: enabled</li></ul>|
+| CFG3    | This design uses the MIV_RV32 core configured as follows: <ul><li>RISC-V Extensions: I</li><li>Multiplier: none</li><li>Interfaces: APB3 Master</li><li>Internal IRQs: 1</li><li>TCM: enabled</li><li>System Timer: Internal MTIME enabled, Internal MTIME IRQ enabled</li><li>Debug: enabled</li></ul>|
 
 
 #### RTG4_Dev_Kit_MIV_RV32IMA_BaseDesign
@@ -37,7 +38,7 @@ This folder contains Tcl scripts that build Libero SoC v2022.1 design projects f
     6. Select the "Run" button to execute the script
     7. Once complete, a script report will be generated.
 
-Libero executes the script and opens the Mi-V sample project. The script adds Timing constraints to the project for Synthesis, Place and Route, and Timing Verification. Additionally, IO Constraints are added to the project for Place and Route. The project can now be taken through the remainder of the Libero SoC design flow.
+Libero executes the script and opens the Mi-V sample project targeted for a production silicon (PS) die. The script adds Timing constraints to the project for Synthesis, Place and Route, and Timing Verification. Additionally, I/O Constraints are added to the project for Place and Route. The project can now be taken through the remainder of the Libero SoC design flow.
 
 #### Running Libero SoC in GUI mode, with Script Arguments
     1. Open Libero SoC
@@ -48,9 +49,9 @@ Libero executes the script and opens the Mi-V sample project. The script adds Ti
     6. Select the "Run" button to execute the script
     7. Once complete, a script report will be generated.
 
-IIn this example, the arguments "CFG1 SYNTHESIZE PS" are entered to take the 'PS' die project through to Synthesis.
+In this example, the arguments "CFG1 SYNTHESIZE PS" are entered to take the production silicon (PS) die project through to Synthesis.
 
-Libero executes the script and opens the Mi-V sample project. The script adds Timing constraints to the project for Synthesis, Place and Route, and Timing Verification. Additionally, IO Constraints are added to the project for Place and Route. The project can now be taken through the remainder of the Libero SoC design flow.
+Libero executes the script and opens the Mi-V sample project targeted for a production silicon (PS) die. The script adds Timing constraints to the project for Synthesis, Place and Route, and Timing Verification. Additionally, I/O Constraints are added to the project for Place and Route. The project can now be taken through the remainder of the Libero SoC design flow.
 
 ## <a name="Script arguments"></a> Script Arguments
 In the examples above the arguments "CFG1" and "CFG1 SYNTHESIZE PS" were entered. The complete set of script arguments are documented here.
@@ -68,7 +69,6 @@ In the examples above the arguments "CFG1" and "CFG1 SYNTHESIZE PS" were entered
 | PLACE_AND_ROUTE           | Run place and route on the design  |
 | GENERATE_BITSTREAM        | Generate the bitstream for the design|
 | EXPORT_PROGRAMMING_FILE   | Export the programming file (.job) |
-| PS | Build a base design targeted for 'PS' die |
 
 
 #### Third argument:
