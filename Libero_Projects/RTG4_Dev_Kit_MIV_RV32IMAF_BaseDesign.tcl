@@ -1,190 +1,251 @@
-set project_folder_name_CFG1 MIV_CFG1_BD
-set project_dir_CFG1 "./$project_folder_name_CFG1"
-set Libero_project_name_CFG1 RTG4_Dev_Kit_MIV_RV32IMAF_CFG1_BaseDesign
-
 set config [string toupper [lindex $argv 0]]
 set design_flow_stage [string toupper [lindex $argv 1]]
+set die_variant [string toupper [lindex $argv 2]]
 
+set hw_platform RTG4_Dev_Kit
+set soft_cpu MIV_RV32IMAF
+set sd_reference BaseDesign
 
-proc create_new_project_label { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-	puts "Creating a new project for the 'RTG4_Dev_Kit' board."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+#ES device is not supported in these scripts
+
+#
+# Procedure blocks start
+proc create_new_project_label { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nCreating a new project for the 'RTG4_Dev_Kit' board. \
+		  \r\n-------------------------------------------------------------------------------"
 }
 
-proc project_exists { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-	puts "Error: A project exists for the 'RTG4_Dev_Kit' with this configuration."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+proc project_exists { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nError: A project exists for the 'RTG4_Dev_Kit' with this configuration. \
+		  \r\n-------------------------------------------------------------------------------"
 }
 
-proc no_first_argument_entered { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "No 1st Argument has been entered."
-	puts "Enter the 1st Argument responsible for type of design configuration -'CFG1..CFGn' " 
-	puts "Default 'CFG1' design has been selected."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+proc no_first_argument_entered { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nInfo: No 1st Argument has been entered. \
+		  \r\nInfo: Enter the 1st Argument responsible for type of design configuration -'CFG1..CFGn' \
+		  \r\nInfo: Default 'CFG1' design has been selected. \
+		  \r\n-------------------------------------------------------------------------------"
 }
 
-proc invalid_first_argument { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Wrong 1st Argument has been entered."
-    puts "Make sure you enter a valid first argument -'CFG1..CFGn'."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+proc invalid_first_argument { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nError: Wrong 1st Argument has been entered. No valid configuration detected. \
+		  \r\nInfo: Make sure you enter a valid first argument -'CFG1..CFGn'. \
+		  \r\n-------------------------------------------------------------------------------"
 }
 
-proc no_second_argument_entered { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "No 2nd Argument has been entered."
-	puts "Enter the 2nd Argument after the 1st to be taken further in the Design Flow." 
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+proc no_second_argument_entered { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nInfo: No 2nd Argument has been entered. \
+		  \r\nInfo: Enter the 2nd Argument after the 1st to be taken further in the Design Flow. \
+		  \r\n-------------------------------------------------------------------------------"
 }
 
-proc invalid_second_argument { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Wrong 2nd Argument has been entered."
-    puts "Make sure you enter a valid 2nd argument -'Synthesize...Export_Programming_File'."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+proc invalid_second_argument { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nError: Wrong 2nd Argument has been entered. \
+		  \r\nInfo: Make sure you enter a valid 2nd argument -'Synthesize...Export_Programming_File'.\
+		  \r\n-------------------------------------------------------------------------------"
 }
 
-proc  base_design_built { }\
-{
-	puts "\n---------------------------------------------------------------------------------------------------------"
-	puts "BaseDesign built."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+proc no_third_argument_entered { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nInfo: No 3rd Argument has been entered. \
+		  \r\nInfo: Assuming the default 'PS' die type as target \
+		  \r\n-------------------------------------------------------------------------------"
 }
 
-proc download_cores_all_cfgs  { }\
-{
-	download_core -vlnv {Actel:DirectCore:CoreAPB3:4.2.100} -location {www.microchip-ip.com/repositories/DirectCore}
-	download_core -vlnv {Actel:DirectCore:COREAHBTOAPB3:3.2.101} -location {www.microchip-ip.com/repositories/DirectCore}
-	download_core -vlnv {Actel:DirectCore:CoreAHBLite:5.5.101} -location {www.microchip-ip.com/repositories/DirectCore}
-	download_core -vlnv {Actel:SystemBuilder:RTG4_SRAM_AHBL_AXI:1.0.117} -location {www.microchip-ip.com/repositories/SgCore}
-	download_core -vlnv {Actel:SgCore:OSC:2.0.101} -location {www.microchip-ip.com/repositories/SgCore}
-	download_core -vlnv {Actel:SgCore:FCCC:2.0.201} -location {www.microchip-ip.com/repositories/SgCore}
+proc invalid_third_argument { } {
+	puts "\n------------------------------------------------------------------------------- \
+          \r\nError: Wrong 3rd Argument has been entered. \
+          \r\nInfo: Only valid 3rd Argument is 'PS' or '<blank>'. \
+		  \r\n-------------------------------------------------------------------------------"
+}
+
+proc  base_design_built { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nInfo: BaseDesign built. \
+		  \r\n-------------------------------------------------------------------------------"
+}
+
+proc es_device_not_supported { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nError: Engineering Sample (ES) die not supported in these scripts. \
+		  \r\n-------------------------------------------------------------------------------"
+}
+
+proc  legacy_core_msg { } {
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nWarning: This Libero design uses a legacy Mi-V soft processor core. \
+		  \r\nWarning: Legacy Mi-V soft processors are not recommended for new designs. \
+		  \r\nInfo: MIV_RV32 is recommended for new designs. \
+		  \r\n-------------------------------------------------------------------------------"
+}
+
+proc download_required_direct_cores  { } {
 	download_core -vlnv {Actel:DirectCore:CoreUARTapb:5.7.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:CoreTimer:2.0.103} -location {www.microchip-ip.com/repositories/DirectCore}
+	download_core -vlnv {Actel:DirectCore:CORERESET_PF:2.3.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:COREJTAGDEBUG:4.0.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:CoreGPIO:3.2.102} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Actel:DirectCore:COREAXITOAHBL:3.6.101} -location {www.microchip-ip.com/repositories/DirectCore}
-	#download_core -vlnv {Actel:DirectCore:COREAXI4INTERCONNECT:2.8.103} -location {www.microchip-ip.com/repositories/DirectCore}
+	download_core -vlnv {Actel:DirectCore:CoreAPB3:4.2.100} -location {www.microchip-ip.com/repositories/DirectCore}
+	download_core -vlnv {Actel:DirectCore:COREAHBTOAPB3:3.2.101} -location {www.microchip-ip.com/repositories/DirectCore}
+	download_core -vlnv {Actel:DirectCore:CoreAHBLite:5.6.105} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -location {www.microchip-ip.com/repositories/DirectCore}
 	download_core -vlnv {Microsemi:MiV:MIV_RV32IMA_L1_AHB:2.3.100} -location {www.microchip-ip.com/repositories/DirectCore} 
 	download_core -vlnv {Microsemi:MiV:MIV_RV32IMA_L1_AXI:2.1.100} -location {www.microchip-ip.com/repositories/DirectCore} 
 	download_core -vlnv {Microsemi:MiV:MIV_RV32IMAF_L1_AHB:2.1.100} -location {www.microchip-ip.com/repositories/DirectCore} 
 }
 
-proc pre_configure_place_and_route { }\
-{
-    # Configuring Place_and_Route tool for a timing pass.
-    configure_tool -name {PLACEROUTE} -params {TDPR:true} -params {IOREG_COMBINING:true} -params {INCRPLACEANDROUTE:false} -params {REPAIR_MIN_DELAY:true}
+proc pre_configure_place_and_route { } {
+	configure_tool -name {PLACEROUTE} -params {EFFORT_LEVEL:false} -params {REPAIR_MIN_DELAY:true} -params {TDPR:true} -params {IOREG_COMBINING:false}
 }
 
-proc run_verify_timing { }\
-{
+proc run_verify_timing { } {
 	run_tool -name {VERIFYTIMING}	
 }
+# Procedure blocks end
+#
+
+#Filter for argument argv0: config
+if {$config == ""} then {
+	set config "CFG1"
+	no_first_argument_entered
+} elseif {$config != "CFG1"} then {
+	puts "config is: $config"
+	invalid_first_argument
+	exit 1
+} else {
+	puts "Info: Configuration selected: $config"
+}
+
+#Filter for argument argv1: design flow
+if {$design_flow_stage == ""} then {
+	no_second_argument_entered
+} elseif {$design_flow_stage == "SYNTHESIZE"
+		  || $design_flow_stage == "PLACE_AND_ROUTE"
+		  || $design_flow_stage == "GENERATE_BITSTREAM"
+		  || $design_flow_stage == "EXPORT_PROGRAMMING_FILE"} then {
+	puts "Info: Design flow run tool selected: $design_flow_stage"
+} elseif {$design_flow_stage == "ES" 
+		  || $design_flow_stage == "PS"} then {
+	set die_variant "$design_flow_stage"
+} else {
+	invalid_second_argument
+	exit 1
+}
+
+#Filter for argument argv2: die type
+if {$die_variant == ""} {
+	set die_variant "PS"
+	no_third_argument_entered
+} elseif {$die_variant == "PS"} {
+	puts "Info: Die type selected: $die_variant"
+} elseif {$die_variant == "ES"} {
+	es_device_not_supported
+	exit 1
+} else {
+	invalid_third_argument
+	exit 1
+}
+
+append target_board $hw_platform _ $die_variant
+append project_folder_name MIV_ $config _BD
+set project_dir "./$project_folder_name"
+append project_name $target_board _ $soft_cpu _ $config _ $sd_reference
 
 if {"$config" == "CFG1"} then {
-	if {[file exists $project_dir_CFG1] == 1} then {
+	if {[file exists $project_dir] == 1} then {
 		project_exists
 	} else {
 		create_new_project_label
-		new_project -location  $project_dir_CFG1 -name $Libero_project_name_CFG1 -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
-		download_cores_all_cfgs
-		source ./import/components/IMAF_CFG1/import_component_and_constraints_rtg4_dev_kit_rv32imaf_cfg1.tcl
+		if {"$die_variant" != "PS"} then {
+			invalid_third_argument
+		} else {
+			new_project -location  $project_dir -name $project_name -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
+		}
+		download_required_direct_cores
+		source ./import/components/IMAF_CFG1/import_sd_and_constraints_rtg4_imaf_cfg1.tcl
 		save_project
         base_design_built
 	}
-} elseif {"$config" != ""} then {
-		invalid_first_argument
 } else {
-	if {[file exists $project_dir_CFG1] == 1} then {
-		project_exists
-	} else {
-		no_first_argument_entered
-		create_new_project_label
-		new_project -location  $project_dir_CFG1 -name $Libero_project_name_CFG1 -project_description {} -block_mode 0 -standalone_peripheral_initialization 0 -instantiate_in_smartdesign 1 -ondemand_build_dh 1 -hdl {VERILOG} -family {RTG4} -die {RT4G150} -package {1657 CG} -speed {STD} -die_voltage {1.2} -part_range {MIL} -adv_options {IO_DEFT_STD:LVCMOS 2.5V} -adv_options {RESTRICTPROBEPINS:1} -adv_options {RESTRICTSPIPINS:0} -adv_options {TEMPR:MIL} -adv_options {VCCI_1.2_VOLTR:MIL} -adv_options {VCCI_1.5_VOLTR:MIL} -adv_options {VCCI_1.8_VOLTR:MIL} -adv_options {VCCI_2.5_VOLTR:MIL} -adv_options {VCCI_3.3_VOLTR:MIL} -adv_options {VOLTR:MIL}
-		download_cores_all_cfgs
-		source ./import/components/IMAF_CFG1/import_component_and_constraints_rtg4_dev_kit_rv32imaf_cfg1.tcl
-		save_project
-        base_design_built
-	}
-} 
+		invalid_first_argument
+		exit 1
+}
 
-	pre_configure_place_and_route
+pre_configure_place_and_route
 
 if {"$design_flow_stage" == "SYNTHESIZE"} then {
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Begin Synthesis..."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nBegin Synthesis... \
+		  \r\n-------------------------------------------------------------------------------"
 
     run_tool -name {SYNTHESIZE}
     save_project
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Synthesis Complete."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nSynthesis Complete. \
+		  \r\n-------------------------------------------------------------------------------"
 
 
 } elseif {"$design_flow_stage" == "PLACE_AND_ROUTE"} then {
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Begin Place and Route..."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nBegin Place and Route... \
+		  \r\n-------------------------------------------------------------------------------"
 
 	run_verify_timing
 	save_project
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Place and Route Complete."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nPlace and Route Complete. \
+		  \r\n-------------------------------------------------------------------------------"
 
 
 } elseif {"$design_flow_stage" == "GENERATE_BITSTREAM"} then {
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Generating Bitstream..."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nGenerating Bitstream... \
+		  \r\n-------------------------------------------------------------------------------"
 
 	run_verify_timing
     run_tool -name {GENERATEPROGRAMMINGDATA}
     run_tool -name {GENERATEPROGRAMMINGFILE}
     save_project
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Bitstream Generated."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nBitstream Generated. \
+		  \r\n-------------------------------------------------------------------------------"
 
 
 } elseif {"$design_flow_stage" == "EXPORT_PROGRAMMING_FILE"} then {
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Exporting Programming Files..."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
-	
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nExporting Programming Files... \
+		  \r\n-------------------------------------------------------------------------------"
+
 	run_verify_timing
 	run_tool -name {GENERATEPROGRAMMINGFILE}
 
-		export_prog_job \
-			-job_file_name {RTG4_Dev_Kit_MIV_RV32IMAF_CFG1_BaseDesign} \
-			-export_dir {./MIV_CFG1_BD/designer/BaseDesign/export} \
-			-force_rtg4_otp 0 \
-			-design_bitstream_format {PPD} 
-		save_project
+	export_prog_job \
+		-job_file_name $project_name \
+		-export_dir $project_dir/designer/BaseDesign/export \
+		-force_rtg4_otp 0 \
+		-design_bitstream_format {PPD} 
+	save_project
 
-	puts "\n---------------------------------------------------------------------------------------------------------"
-    puts "Programming Files Exported."
-	puts "--------------------------------------------------------------------------------------------------------- \n"
 
-} elseif {"$design_flow_stage" != ""} then {
-	invalid_second_argument
+	puts "\n------------------------------------------------------------------------------- \
+		  \r\nProgramming Files Exported. \
+		  \r\n-------------------------------------------------------------------------------"
+
 } else {
-	no_second_argument_entered
+	puts "Info: No design flow tool run."
 }
+
+legacy_core_msg
