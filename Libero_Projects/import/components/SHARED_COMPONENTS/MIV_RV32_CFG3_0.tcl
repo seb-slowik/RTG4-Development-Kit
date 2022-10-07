@@ -1,10 +1,10 @@
-# Exporting core MIV_RV32_CFG1_0 to TCL
-# Exporting Create design command for core MIV_RV32_CFG1_0
-create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -component_name {MIV_RV32_CFG1} -params {\
-"AHB_END_ADDR_0:0x7fff"  \
+# Exporting core MIV_RV32_CFG3_0 to TCL
+# Exporting Create design command for core MIV_RV32_CFG3_0
+create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -component_name {MIV_RV32_CFG3_0} -params {\
+"AHB_END_ADDR_0:0xffff"  \
 "AHB_END_ADDR_1:0x8fff"  \
-"AHB_MASTER_TYPE:1"  \
-"AHB_SLAVE_MIRROR:true"  \
+"AHB_MASTER_TYPE:0"  \
+"AHB_SLAVE_MIRROR:false"  \
 "AHB_START_ADDR_0:0x0"  \
 "AHB_START_ADDR_1:0x8000"  \
 "APB_END_ADDR_0:0xffff"  \
@@ -29,7 +29,7 @@ create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -component
 "DEBUGGER:true"  \
 "ECC_ENABLE:false"  \
 "FWD_REGS:false"  \
-"GEN_DECODE_RV32:3"  \
+"GEN_DECODE_RV32:0"  \
 "GEN_MUL_TYPE:2"  \
 "GPR_REGS:false"  \
 "INTERNAL_MTIME:true"  \
@@ -43,11 +43,12 @@ create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -component
 "TAS_END_ADDR_1:0x4000"  \
 "TAS_START_ADDR_0:0x0"  \
 "TAS_START_ADDR_1:0x4000"  \
-"TCM_END_ADDR_0:0x3fff"  \
-"TCM_END_ADDR_1:0x4000"  \
-"TCM_PRESENT:false"  \
+"TCM_END_ADDR_0:0x7fff"  \
+"TCM_END_ADDR_1:0x8000"  \
+"TCM_PRESENT:true"  \
 "TCM_START_ADDR_0:0x0"  \
-"TCM_START_ADDR_1:0x4000"  \
+"TCM_START_ADDR_1:0x8000"  \
 "TCM_TAS_PRESENT:false"  \
 "VECTORED_INTERRUPTS:false"   }
-# Exporting core MIV_RV32_CFG1_0 to TCL done
+# Exporting core MIV_RV32_CFG3_0 to TCL done
+
