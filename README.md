@@ -20,15 +20,15 @@ To download or clone the repository:
 
 
 # Libero Projects
-The Libero_Projects folder contains sample Mi-V Libero designs for Libero SoC v2022.1. Libero projects for older Libero releases can be downloaded from their [tags](https://github.com/Mi-V-Soft-RISC-V/RTG4-Development-Kit/releases) in this repository.
+The Libero_Projects folder contains [sample Mi-V Libero designs](Libero_Projects) for Libero SoC v2022.2. Libero projects for older Libero releases can be downloaded from their [tags](https://github.com/Mi-V-Soft-RISC-V/RTG4-Development-Kit/releases) in this repository.
 
 ## Design Features
 The Libero designs include the following features:
-* A soft RISC-V processor.
+* A soft RISC-V processor operating at 40 MHz **(The hw_platform.h file in the SoftConsole project will require the SYS_CLK_FREQ parameter to be set to #define SYS_CLK_FREQ 40000000UL)**
 * A RISC-V debug block allowing on-target debug using SoftConsole
-* The operating frequency of the design is 50MHz
-* Target memory is SRAM/TCM (32kB)
-* User peripherals: 2 Timers, UART, 2 GPIO Inputs and 4 GPIO Outputs (GPIOs use fixed configs for simplicity and better resource utilization)
+* An Extended Subsystem with integrated peripherals
+* Target SRAM/TCM memory (32kB)
+* User peripherals: MIV_ESS, 2 Timers, UART, 2 GPIO Inputs and 4 GPIO Outputs (GPIOs use fixed configs for simplicity and better resource utilization)
 
 ## Target Hardware
 Details of the RTG4 Development kit and it's features can be found:
@@ -40,7 +40,7 @@ The FlashPro_Express_Projects folder contains the pre-generated programming file
 # Design Tools
 The following design tools are required.
 
-## Libero SoC v2022.1
+## Libero SoC v2022.2
 [Libero SoC](https://www.microsemi.com/products/fpga-soc/design-resources/design-software/libero-soc#downloads) is Microchip's FPGA design software.
 
 ## FlashPro Express
