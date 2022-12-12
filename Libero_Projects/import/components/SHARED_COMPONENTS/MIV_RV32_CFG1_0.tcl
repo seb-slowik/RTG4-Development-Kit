@@ -1,10 +1,10 @@
-# Exporting core MIV_RV32_CFG2_0 to TCL
-# Exporting Create design command for core MIV_RV32_CFG2_0
-create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -component_name {MIV_RV32_CFG2} -params {\
-"AHB_END_ADDR_0:0xffff"  \
+# Exporting core MIV_RV32_CFG1_0 to TCL
+# Exporting Create design command for core MIV_RV32_CFG1_0
+create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -component_name {MIV_RV32_CFG1_0} -params {\
+"AHB_END_ADDR_0:0x7fff"  \
 "AHB_END_ADDR_1:0x8fff"  \
-"AHB_MASTER_TYPE:0"  \
-"AHB_SLAVE_MIRROR:false"  \
+"AHB_MASTER_TYPE:1"  \
+"AHB_SLAVE_MIRROR:true"  \
 "AHB_START_ADDR_0:0x0"  \
 "AHB_START_ADDR_1:0x8000"  \
 "APB_END_ADDR_0:0xffff"  \
@@ -13,12 +13,12 @@ create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -component
 "APB_SLAVE_MIRROR:false"  \
 "APB_START_ADDR_0:0x0"  \
 "APB_START_ADDR_1:0x7000"  \
-"AXI_END_ADDR_0:0x7fff"  \
-"AXI_END_ADDR_1:0x8fff"  \
-"AXI_MASTER_TYPE:2"  \
-"AXI_SLAVE_MIRROR:true"  \
+"AXI_END_ADDR_0:0xffff"  \
+"AXI_END_ADDR_1:0x6fff"  \
+"AXI_MASTER_TYPE:0"  \
+"AXI_SLAVE_MIRROR:false"  \
 "AXI_START_ADDR_0:0x0"  \
-"AXI_START_ADDR_1:0x8000"  \
+"AXI_START_ADDR_1:0x6000"  \
 "BOOTROM_DEST_ADDR_LOWER:0x0"  \
 "BOOTROM_DEST_ADDR_UPPER:0x4000"  \
 "BOOTROM_PRESENT:false"  \
@@ -29,8 +29,8 @@ create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -component
 "DEBUGGER:true"  \
 "ECC_ENABLE:false"  \
 "FWD_REGS:false"  \
-"GEN_DECODE_RV32:2"  \
-"GEN_MUL_TYPE:0"  \
+"GEN_DECODE_RV32:3"  \
+"GEN_MUL_TYPE:2"  \
 "GPR_REGS:false"  \
 "INTERNAL_MTIME:true"  \
 "INTERNAL_MTIME_IRQ:true"  \
@@ -50,4 +50,4 @@ create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32:3.0.100} -component
 "TCM_START_ADDR_1:0x4000"  \
 "TCM_TAS_PRESENT:false"  \
 "VECTORED_INTERRUPTS:false"   }
-# Exporting core MIV_RV32_CFG2_0 to TCL done
+# Exporting core MIV_RV32_CFG1_0 to TCL done
