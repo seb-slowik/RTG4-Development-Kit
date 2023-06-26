@@ -25,15 +25,22 @@
 # User Locked I/O settings
 # 
 
+# -- Clock (50MHz) -- #
+# MSIOD73PB1/GB12_23/CCC_NE0_CLKI2/SPWR_NE0_1_RX_STROBE_P
 
-# -- User PushButtons I/O -- #
+set_io -port_name {REF_CLK}  \
+	-pin_name AA39              	\
+	-fixed true               	\
+	-DIRECTION INPUT
 
-set_io {PUSH_BTN_1}   \
+# -- User I/O -- #
+
+set_io {SW_1}   \
     -pinname AA30      \
     -fixed yes        \
     -DIRECTION INPUT
 
-set_io {PUSH_BTN_2}   \
+set_io {SW_2}   \
     -pinname AB31      \
     -fixed yes        \
     -DIRECTION INPUT

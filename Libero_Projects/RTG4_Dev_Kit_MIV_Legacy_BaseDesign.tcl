@@ -12,8 +12,8 @@ source $scriptDir/import/proc_blocks.tcl
 
 # Set valid configurations
 set hwPlatform "RTG4_DEV"
-set hwFamily "RTG4"
-set softCpu "MIV_RV32"
+set hwFamily "POLARFIRE"
+set softCpu "MIV_Legacy"
 set validConfigs [list "CFG1" "CFG2" "CFG3"]
 set validDesignFlows [list "SYNTHESIZE" "PLACE_AND_ROUTE" "GENERATE_BITSTREAM" "EXPORT_PROGRAMMING_FILE"]
 set validDieTypes [list "PS" "ES" ""]
@@ -34,7 +34,7 @@ print_message "Runnig script: $scriptPath \nDesign Arguments: $config $designFlo
 
 # Configure Libero project files and directories
 append projectName $hwPlatform _ $dieType _ $softCpu _ $config _ $sdName
-append projectFolderName MIV_ $config _BD
+append projectFolderName MIV_ Legacy_ $config _BD
 set projectDir $scriptDir/$projectFolderName
 
 # Build Libero design project for selected configuration and hardware
@@ -117,7 +117,7 @@ if {"$designFlow" == "SYNTHESIZE"} then {
 	print_message "Exporting Programming Files..."
 
 	run_verify_timing
-
+	
 	run_tool -name {GENERATEPROGRAMMINGFILE}
 	export_prog_job \
 		-job_file_name $projectName \
