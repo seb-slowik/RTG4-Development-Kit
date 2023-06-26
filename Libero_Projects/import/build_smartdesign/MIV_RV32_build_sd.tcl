@@ -87,7 +87,7 @@ sd_instantiate_macro -sd_name ${sdName} -macro_name {AND2} -instance_name {AND2_
 
 
 # Add reset_synchronizer_0 instance
-sd_instantiate_hdl_module -sd_name ${sd_name} -hdl_module_name {reset_synchronizer} -hdl_file {hdl\reset_synchronizer.v} -instance_name {reset_synchronizer_0}
+sd_instantiate_hdl_module -sd_name ${sdName} -hdl_module_name {reset_synchronizer} -hdl_file {hdl\reset_synchronizer.v} -instance_name {reset_synchronizer_0}
 
 
 # Add CoreTimer_C0 instance
@@ -117,9 +117,10 @@ sd_connect_pins -sd_name ${sdName} -pin_names {"CLKBUF_0:PAD" "REF_CLK"}
 #sd_connect_pins -sd_name ${sdName} -pin_names {"RCOSC_50MHZ_0:CLKOUT" "RTG4FCCC_0:RCOSC_50MHZ" }
 sd_connect_pins -sd_name ${sdName} -pin_names {"reset_synchronizer_0:reset" "AND2_0:Y"}
 sd_connect_pins -sd_name ${sdName} -pin_names {"AND2_0:B" "RTG4FCCC_C0_0:LOCK" }
-sd_connect_pins -sd_name ${sdName} -pin_names {"AND2_0:A" "SYSRESET_C0_0:POWER_ON_RESET_N" }
+sd_connect_pins -sd_name ${sdName} -pin_names {"AND2_0:A" "SYSRESET_0:POWER_ON_RESET_N" }
 sd_connect_pins -sd_name ${sdName} -pin_names "RTG4FCCC_C0_0:GL0 ${softCpu}_${config}_C0_0:CLK" 
 sd_connect_pins -sd_name ${sdName} -pin_names "RTG4FCCC_C0_0:GL0 MIV_ESS_C0_0:PCLK"
+sd_connect_pins -sd_name ${sdName} -pin_names "RTG4FCCC_C0_0:GL0 reset_synchronizer_0:clock"
 sd_connect_pins -sd_name ${sdName} -pin_names "RTG4FCCC_C0_0:GL0 CoreTimer_C0_0:PCLK"
 sd_connect_pins -sd_name ${sdName} -pin_names "RTG4FCCC_C0_0:GL0 CoreTimer_C1_0:PCLK"
 if {$config eq "CFG1"} {sd_connect_pins -sd_name ${sdName} -pin_names {"RTG4FCCC_C0_0:GL0" "RTG4_SRAM_C0_0:HCLK"} 
