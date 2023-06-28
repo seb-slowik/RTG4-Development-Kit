@@ -31,7 +31,7 @@
 
 # set_io -port_name {CLK2_PAD}  \
 	-pin_name AA39              	\
-	-fixed true               	\
+	-fixed yes               	\
 	-DIRECTION INPUT
 
 # -- User I/O -- #
