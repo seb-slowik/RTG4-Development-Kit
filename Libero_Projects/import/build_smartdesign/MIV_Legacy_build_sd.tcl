@@ -36,7 +36,7 @@ create_smartdesign -sd_name ${sdName}
 auto_promote_pad_pins -promote_all 0
 
 # Create top level Ports
-sd_create_scalar_port -sd_name ${sdName} -port_name {REF_CLK} -port_direction {IN}
+sd_create_scalar_port -sd_name ${sdName} -port_name {CLK2_PAD} -port_direction {IN}
 sd_create_scalar_port -sd_name ${sdName} -port_name {TRSTB} -port_direction {IN}
 sd_create_scalar_port -sd_name ${sdName} -port_name {TCK} -port_direction {IN}
 sd_create_scalar_port -sd_name ${sdName} -port_name {TDI} -port_direction {IN}
@@ -67,10 +67,6 @@ if {$config in {"CFG1" "CFG2"}} {sd_mark_pins_unused -sd_name ${sdName} -pin_nam
 
 # Add RTG4FCCC_C0 instance
 sd_instantiate_component -sd_name ${sdName}  -component_name {RTG4FCCC_C0} -instance_name {RTG4FCCC_C0_0}
-
-
-# Add Clock Buffer Macro for ref clock
-sd_instantiate_macro -sd_name ${sdName} -macro_name {CLKBUF} -instance_name {CLKBUF_0} 
 
 
 # Add SYSRESET_0 instance
@@ -151,9 +147,7 @@ if {$config eq "CFG3"} {sd_instantiate_component -sd_name ${sdName} -component_n
 
 
 # Add scalar net connections
-sd_connect_pins -sd_name ${sdName} -pin_names {"CLKBUF_0:Y" "RTG4FCCC_C0_0:RCOSC_50MHZ"} 
-sd_connect_pins -sd_name ${sdName} -pin_names {"CLKBUF_0:PAD" "REF_CLK"}
-#sd_connect_pins -sd_name ${sdName} -pin_names {"RCOSC_50MHZ_0:CLKOUT" "RTG4FCCC_0:RCOSC_50MHZ" }
+sd_connect_pins -sd_name ${sdName} -pin_names {"CLK2_PAD" "RTG4FCCC_C0_0:CLK2_PAD"} 
 sd_connect_pins -sd_name ${sdName} -pin_names {"reset_synchronizer_0:reset" "AND2_0:Y"}
 sd_connect_pins -sd_name ${sdName} -pin_names {"AND2_0:B" "RTG4FCCC_C0_0:LOCK" }
 sd_connect_pins -sd_name ${sdName} -pin_names {"AND2_0:A" "SYSRESET_0:POWER_ON_RESET_N" }

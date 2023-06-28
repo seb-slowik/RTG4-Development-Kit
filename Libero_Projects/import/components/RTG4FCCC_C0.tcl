@@ -1,15 +1,15 @@
-# Exporting Component Description of RTG4FCCC_0 to TCL
+# Exporting Component Description of RTG4FCCC_C0 to TCL
 # Family: RTG4
 # Part Number: RT4G150-CG1657
-# Create and Configure the core component RTG4FCCC_0
-create_and_configure_core -core_vlnv {Actel:SgCore:RTG4FCCC:*} -download_core -component_name {RTG4FCCC_C0} -params {\
+# Create and Configure the core component RTG4FCCC_C0
+create_and_configure_core -core_vlnv {Actel:SgCore:RTG4FCCC:2.0.204} -component_name {RTG4FCCC_C0} -params {\
 "ADVANCED_TAB_CHANGED:false"  \
 "CLK0_IS_USED:false"  \
 "CLK0_PAD_IS_USED:false"  \
 "CLK1_IS_USED:false"  \
 "CLK1_PAD_IS_USED:false"  \
 "CLK2_IS_USED:false"  \
-"CLK2_PAD_IS_USED:false"  \
+"CLK2_PAD_IS_USED:true"  \
 "CLK3_IS_USED:false"  \
 "CLK3_PAD_IS_USED:false"  \
 "DYN_CONF_IS_USED:false"  \
@@ -86,7 +86,7 @@ create_and_configure_core -core_vlnv {Actel:SgCore:RTG4FCCC:*} -download_core -c
 "GPD_EXPOSE_RESETS:false"  \
 "GPD_SYNC_STYLE:G3STYLE_AND_LOCK_RSTSYNC"  \
 "INCLUDE_RECONFIGURATION_LOGIC:true"  \
-"INIT:088101248800020B80404040664C993186181C31C46C"  \
+"INIT:088101248800020B80404040664C993186181C31C448"  \
 "IO_HARDWIRED_0_IS_DIFF:false"  \
 "IO_HARDWIRED_1_IS_DIFF:false"  \
 "IO_HARDWIRED_2_IS_DIFF:false"  \
@@ -104,7 +104,7 @@ create_and_configure_core -core_vlnv {Actel:SgCore:RTG4FCCC:*} -download_core -c
 "PLL_EXT_FB_GL:EXT_FB_GL0"  \
 "PLL_FB_SRC:CCC_INTERNAL"  \
 "PLL_IN_FREQ:50.0000"  \
-"PLL_IN_SRC:OSC_50MHZ"  \
+"PLL_IN_SRC:IO_HARDWIRED_2"  \
 "PLL_IS_USED:true"  \
 "PLL_LOCK_IND:1024"  \
 "PLL_LOCK_WND:6000"  \
@@ -113,7 +113,7 @@ create_and_configure_core -core_vlnv {Actel:SgCore:RTG4FCCC:*} -download_core -c
 "PLL_SSM_FREQ:40"  \
 "PLL_SUPPLY_VOLTAGE:25_V"  \
 "PLL_VCO_TARGET:700"  \
-"RCOSC_25_50MHZ_IS_USED:true"  \
+"RCOSC_25_50MHZ_IS_USED:false"  \
 "RX0_RECOVERY_BLOCK_DATA:Unused-Unused"  \
 "RX0_RECOVERY_BLOCK_IS_USED:false"  \
 "RX0_RECOVERY_BLOCK_STROBE:Unused"  \
@@ -127,4 +127,4 @@ create_and_configure_core -core_vlnv {Actel:SgCore:RTG4FCCC:*} -download_core -c
 "Y1_IS_USED:false"  \
 "Y2_IS_USED:false"  \
 "Y3_IS_USED:false"   }
-# Exporting Component Description of RTG4FCCC_0 to TCL done
+# Exporting Component Description of RTG4FCCC_C0 to TCL done
