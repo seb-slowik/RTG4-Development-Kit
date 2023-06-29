@@ -14,6 +14,7 @@ source $scriptDir/import/proc_blocks.tcl
 set hwPlatform "RTG4_DEV"
 set hwFamily "RTG4"
 set softCpu "MIV_RV32"
+set cpuRef "MIV_RV32"
 set validConfigs [list "CFG1" "CFG2" "CFG3"]
 set validDesignFlows [list "SYNTHESIZE" "PLACE_AND_ROUTE" "GENERATE_BITSTREAM" "EXPORT_PROGRAMMING_FILE"]
 set validDieTypes [list "PS" ""]
@@ -32,7 +33,7 @@ get_die_configuration $hwPlatform $dieType
 print_message "Runnig script: $scriptPath \nDesign Arguments: $config $designFlow $dieType \nDesign Build Script: $sdBuildScript"
 
 # Configure Libero project files and directories
-append projectName $hwPlatform _ $dieType _ $cpuGroup _ $config _ $sdName
+append projectName $hwPlatform _ $dieType _ $cpuRef _ $config _ $sdName
 append projectFolderName "${softCpu}_${config}_BD"
 set projectDir $scriptDir/$projectFolderName
 
