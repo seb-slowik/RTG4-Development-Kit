@@ -96,7 +96,7 @@ proc verify_dieType { dieType } {
     return $dieType
 }
 
-proc get_config_builder {config validConfigs softCpu} {
+proc get_config_builder {config validConfigs cpuGroup} {
     set configMapping [dict create]
 
     foreach validConfig $validConfigs {
@@ -104,7 +104,7 @@ proc get_config_builder {config validConfigs softCpu} {
             "CFG1" -
             "CFG2" -
             "CFG3" {
-                dict set configMapping $validConfig $softCpu
+                dict set configMapping $validConfig $cpuGroup
             }
             "CFG4" {
                 dict set configMapping $validConfig "MIV_RV32_Crypto"
@@ -116,26 +116,26 @@ proc get_config_builder {config validConfigs softCpu} {
                 dict set configMapping $validConfig "MIV_ESS"
             }
             default {
-                dict set configMapping $validConfig $softCpu
+                dict set configMapping $validConfig $cpuGroup
             }
         }
     }
 
     set mappedValue [dict get $configMapping $config]
     if {$mappedValue eq ""} {
-        set mappedValue $softCpu
+        set mappedValue $cpuGroup
     }
 
     return "${mappedValue}_build_sd.tcl"
 }
 
-proc get_legacy_core_name {config} {
+proc get_legacy_core_name {config, coreRef} {
 
-    if {$config eq "CFG1"} {
+    if { ($config eq "CFG1") && ($coreRef eq "MIV_RV32IMAF")} {
         return "MIV_RV32IMAF_L1_AHB"
-    } elseif {$config eq "CFG2"} {
+    } elseif {($config eq "CFG1") && ($coreRef eq "MIV_RV32IMA")} {
         return "MIV_RV32IMA_L1_AHB"
-    } elseif {$config eq "CFG3"} {
+    } elseif {($config eq "CFG2") && ($coreRef eq "MIV_RV32IMA")} {
         return "MIV_RV32IMA_L1_AXI"
     }
 }

@@ -12,9 +12,9 @@ source $scriptDir/import/proc_blocks.tcl
 
 # Set valid configurations
 set hwPlatform "RTG4_DEV"
-set hwFamily "RTG4"
-set softCpu "MIV_RV32"
-set validConfigs [list "CFG1" "CFG2" "CFG3"]
+set hwFamily "POLARFIRE"
+set cpuRef "MIV_RV32IMA"
+set validConfigs [list "CFG1" "CFG2"]
 set validDesignFlows [list "SYNTHESIZE" "PLACE_AND_ROUTE" "GENERATE_BITSTREAM" "EXPORT_PROGRAMMING_FILE"]
 set validDieTypes [list "PS" ""]
 set sdName {BaseDesign}
@@ -26,6 +26,7 @@ set designFlow [verify_designFlow $designFlow]
 set dieType [verify_dieType $dieType]
 
 # Prime the TCL builder script for desired build settings
+set softCpu [get_legacy_core_name $config $cpuRef]
 set cpuGroup [expr {$softCpu eq "MIV_RV32" ? "MIV_RV32" : "MIV_Legacy"}]
 set sdBuildScript [get_config_builder $config $validConfigs $cpuGroup]
 get_die_configuration $hwPlatform $dieType
@@ -33,7 +34,7 @@ print_message "Runnig script: $scriptPath \nDesign Arguments: $config $designFlo
 
 # Configure Libero project files and directories
 append projectName $hwPlatform _ $dieType _ $cpuGroup _ $config _ $sdName
-append projectFolderName "${softCpu}_${config}_BD"
+append projectFolderName "${cpuRef}_${config}_BD"
 set projectDir $scriptDir/$projectFolderName
 
 # Build Libero design project for selected configuration and hardware
@@ -116,7 +117,7 @@ if {"$designFlow" == "SYNTHESIZE"} then {
 	print_message "Exporting Programming Files..."
 
 	run_verify_timing
-
+	
 	run_tool -name {GENERATEPROGRAMMINGFILE}
 	export_prog_job \
 		-job_file_name $projectName \

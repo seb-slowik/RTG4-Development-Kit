@@ -13,28 +13,28 @@ source $scriptDir/import/proc_blocks.tcl
 # Set valid configurations
 set hwPlatform "RTG4_DEV"
 set hwFamily "POLARFIRE"
-set softCpu "MIV_Legacy"
-set validConfigs [list "CFG1" "CFG2" "CFG3"]
+set cpuRef "MIV_RV32IMAF"
+set validConfigs [list "CFG1"]
 set validDesignFlows [list "SYNTHESIZE" "PLACE_AND_ROUTE" "GENERATE_BITSTREAM" "EXPORT_PROGRAMMING_FILE"]
-set validDieTypes [list "PS" "ES" ""]
+set validDieTypes [list "PS" ""]
+set sdName {BaseDesign}
+set exProgramHex "miv-rv32i-systick-blinky.hex"
 
 # Call procedures to validate user arguments
 set config [verify_config $config]
 set designFlow [verify_designFlow $designFlow]
 set dieType [verify_dieType $dieType]
-set sdName {BaseDesign}
-set exProgramHex "miv-rv32i-systick-blinky.hex"
 
 # Prime the TCL builder script for desired build settings
-set sdBuildScript [get_config_builder $config $validConfigs $softCpu]
-set legacyCpu [get_legacy_core_name $config]
+set softCpu [get_legacy_core_name $config $cpuRef]
+set cpuGroup [expr {$softCpu eq "MIV_RV32" ? "MIV_RV32" : "MIV_Legacy"}]
+set sdBuildScript [get_config_builder $config $validConfigs $cpuGroup]
 get_die_configuration $hwPlatform $dieType
-set cjdRstType [expr {$softCpu eq "MIV_RV32" ? "TRSTN" : "TRST"}]
 print_message "Runnig script: $scriptPath \nDesign Arguments: $config $designFlow $dieType \nDesign Build Script: $sdBuildScript"
 
 # Configure Libero project files and directories
-append projectName $hwPlatform _ $dieType _ $softCpu _ $config _ $sdName
-append projectFolderName MIV_ Legacy_ $config _BD
+append projectName $hwPlatform _ $dieType _ $cpuGroup _ $config _ $sdName
+append projectFolderName "${cpuRef}_${config}_${config}_BD"
 set projectDir $scriptDir/$projectFolderName
 
 # Build Libero design project for selected configuration and hardware
@@ -74,7 +74,7 @@ if {[file exists $projectDir] == 1} then {
 #download_required_direct_cores "$hwPlatform" "$softCpu" "$config"
 
 # Copy the example software program into the project directory
-# file copy -force $scriptDir/import/software_example/$softCpu/$config/hex $projectDir
+# file copy -force $scriptDir/import/software_example/$cpuGroup/$config/hex $projectDir
 
 # Import and build the design's SmartDesign
 print_message "Building the $sdName..."
