@@ -129,7 +129,7 @@ proc get_config_builder {config validConfigs cpuGroup} {
     return "${mappedValue}_build_sd.tcl"
 }
 
-proc get_legacy_core_name {config, coreRef} {
+proc get_legacy_core_name {config coreRef} {
 
     if { ($config eq "CFG1") && ($coreRef eq "MIV_RV32IMAF")} {
         return "MIV_RV32IMAF_L1_AHB"

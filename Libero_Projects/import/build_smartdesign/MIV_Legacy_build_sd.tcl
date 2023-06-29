@@ -14,6 +14,7 @@ import_files -library work -hdl_source $scriptDir/import/hdl/reset_synchronizer.
 build_design_hierarchy
 
 #Sourcing the Tcl files for each of the design's components
+set cjdRstType [expr {$softCpu eq "MIV_RV32" ? "TRSTN" : "TRST"}]
 
 source $scriptDir/import/components/RTG4FCCC_C0.tcl
 source $scriptDir/import/components/COREAHBTOAPB3_C0.tcl 
@@ -29,9 +30,6 @@ if {$softCpu in {"MIV_RV32IMA_L1_AXI"}} {source $scriptDir/import/components/Cor
 						source $scriptDir/import/components/CoreAXITOAHBL_C1.tcl}
 source $scriptDir/import/components/${softCpu}_C0.tcl
 source $scriptDir/import/components/RTG4_SRAM_C0.tcl 
-
-# Specify CoreJTAGDebug component (name extension)
-set cjdRstType [expr {$softCpu eq "MIV_RV32" ? "TRSTN" : "TRST"}]
 
 # Creating SmartDesign BaseDesign
 create_smartdesign -sd_name ${sdName}
