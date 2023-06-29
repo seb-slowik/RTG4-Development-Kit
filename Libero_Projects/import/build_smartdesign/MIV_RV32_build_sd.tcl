@@ -11,7 +11,7 @@
 #This Tcl file sources other Tcl files to build the design(on which recursive export is run) in a bottom-up fashion
 
 #Importing and Linking all the HDL source files used in the design
-import_files -hdl_source ./import/hdl/reset_synchronizer.v
+import_files -library work -hdl_source $scriptDir/import/hdl/reset_synchronizer.v
 build_design_hierarchy
 
 #Sourcing the Tcl files for each of the design's components
