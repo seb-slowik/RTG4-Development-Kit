@@ -64,7 +64,7 @@ sd_create_pin_slices -sd_name ${sdName} -pin_name "${softCpu}_C0_0:IRQ" -pin_sli
 sd_create_pin_slices -sd_name ${sdName} -pin_name "${softCpu}_C0_0:IRQ" -pin_slices {[30]}
 sd_mark_pins_unused -sd_name ${sdName} -pin_names "${softCpu}_C0_0:DRV_TDO"
 sd_mark_pins_unused -sd_name ${sdName} -pin_names "${softCpu}_C0_0:EXT_RESETN"
-if {$softCpu in {"MIV_RV32IMAF_L1_AHB MIV_RV32IMA_L1_AHB"}} {sd_mark_pins_unused -sd_name ${sdName} -pin_names "${softCpu}_C0_0:AHB_MST_MEM_HSEL"
+if {$softCpu in {"MIV_RV32IMAF_L1_AHB" "MIV_RV32IMA_L1_AHB"}} {sd_mark_pins_unused -sd_name ${sdName} -pin_names "${softCpu}_C0_0:AHB_MST_MEM_HSEL"
 								 sd_mark_pins_unused -sd_name ${sdName} -pin_names "${softCpu}_C0_0:AHB_MST_MMIO_HSEL"}
 
 # Add RTG4FCCC_C0 instance
@@ -212,7 +212,7 @@ sd_connect_pins -sd_name ${sdName} -pin_names {"CoreAPB3_C0_0:APBmslave2" "CoreG
 sd_connect_pins -sd_name ${sdName} -pin_names {"CoreAPB3_C0_0:APBmslave3" "CoreTimer_C0_0:APBslave" }
 sd_connect_pins -sd_name ${sdName} -pin_names {"CoreAPB3_C0_0:APBmslave4" "CoreTimer_C1_0:APBslave" }
 sd_connect_pins -sd_name ${sdName} -pin_names {"CoreAPB3_C0_0:APBmslave5" "CoreGPIO_OUT_C0_0:APB_bif" }
-if {$softCpu in {"MIV_RV32IMAF_L1_AHB MIV_RV32IMA_L1_AHB"}} {sd_connect_pins -sd_name ${sdName} -pin_names "${softCpu}_C0_0:AHB_MST_MMIO CoreAHBL_C0_0:AHBmmaster0"
+if {$softCpu in {"MIV_RV32IMAF_L1_AHB" "MIV_RV32IMA_L1_AHB"}} {sd_connect_pins -sd_name ${sdName} -pin_names "${softCpu}_C0_0:AHB_MST_MMIO CoreAHBL_C0_0:AHBmmaster0"
 								 sd_connect_pins -sd_name ${sdName} -pin_names "${softCpu}_C0_0:AHB_MST_MEM CoreAHBL_C0_0:AHBmmaster1"}
 if {$softCpu in {"MIV_RV32IMA_L1_AXI"}} {sd_connect_pins -sd_name ${sdName} -pin_names {"CoreAHBL_C0_0:AHBmmaster0" "CoreAXITOAHBL_C0_0:AHBMasterIF" }
 						sd_connect_pins -sd_name ${sdName} -pin_names {"CoreAHBL_C0_0:AHBmmaster1" "CoreAXITOAHBL_C1_0:AHBMasterIF" }

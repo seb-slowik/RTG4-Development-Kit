@@ -76,11 +76,6 @@ if {[file exists $projectDir] == 1} then {
 # Download the required direct cores
 #download_required_direct_cores "$hwPlatform" "$softCpu" "$config"
 
-# Copy the example software program into the project directory
-# # file copy -force $scriptDir/import/software_example/$cpuGroup/$config/hex $projectDir
-puts "Info: File copy hex: $scriptDir/import/software_example/$cpuGroup/hex to: $projectDir"
-file copy -force $scriptDir/import/software_example/$softCpu/hex $projectDir
-
 # Import and build the design's SmartDesign
 print_message "Building the $sdName..."
 source $scriptDir/import/build_smartdesign/$sdBuildScript
