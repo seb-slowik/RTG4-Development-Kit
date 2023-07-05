@@ -1,6 +1,6 @@
 # Exporting core CoreJTAGDebug_0 to TCL
 # Exporting Create design command for core CoreJTAGDebug_0
-create_and_configure_core -core_vlnv {Actel:DirectCore:COREJTAGDEBUG:4.0.100} -component_name {CoreJTAGDebug_TRST_C0} -params {\
+create_and_configure_core -core_vlnv {Actel:DirectCore:COREJTAGDEBUG:4.0.100} -download_core -component_name {CoreJTAGDebug_TRST_C0} -params {\
 "IR_CODE_TGT_0:0x55"  \
 "IR_CODE_TGT_1:0x56"  \
 "IR_CODE_TGT_2:0x57"  \

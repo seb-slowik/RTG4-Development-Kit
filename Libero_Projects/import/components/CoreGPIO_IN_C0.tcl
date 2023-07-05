@@ -1,6 +1,6 @@
 # Exporting core CoreGPIO_IN to TCL
 # Exporting Create design command for core CoreGPIO_IN
-create_and_configure_core -core_vlnv {Actel:DirectCore:CoreGPIO:3.2.102} -component_name {CoreGPIO_IN_C0} -params {\
+create_and_configure_core -core_vlnv {Actel:DirectCore:CoreGPIO:3.2.102} -download_core -component_name {CoreGPIO_IN_C0} -params {\
 "APB_WIDTH:32"  \
 "FIXED_CONFIG_0:true"  \
 "FIXED_CONFIG_1:true"  \

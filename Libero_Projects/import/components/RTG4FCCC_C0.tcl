@@ -2,7 +2,7 @@
 # Family: RTG4
 # Part Number: RT4G150-CG1657
 # Create and Configure the core component RTG4FCCC_C0
-create_and_configure_core -core_vlnv {Actel:SgCore:RTG4FCCC:2.0.204} -component_name {RTG4FCCC_C0} -params {\
+create_and_configure_core -core_vlnv {Actel:SgCore:RTG4FCCC:2.0.204} -download_core -component_name {RTG4FCCC_C0} -params {\
 "ADVANCED_TAB_CHANGED:false"  \
 "CLK0_IS_USED:false"  \
 "CLK0_PAD_IS_USED:false"  \

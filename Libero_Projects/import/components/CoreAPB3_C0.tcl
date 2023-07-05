@@ -1,6 +1,6 @@
 # Exporting core CoreAPB3_0 to TCL
 # Exporting Create design command for core CoreAPB3_0
-create_and_configure_core -core_vlnv {Actel:DirectCore:CoreAPB3:4.2.100} -component_name {CoreAPB3_C0} -params {\
+create_and_configure_core -core_vlnv {Actel:DirectCore:CoreAPB3:4.2.100} -download_core -component_name {CoreAPB3_C0} -params {\
 "APB_DWIDTH:32"  \
 "APBSLOT0ENABLE:false"  \
 "APBSLOT1ENABLE:true"  \

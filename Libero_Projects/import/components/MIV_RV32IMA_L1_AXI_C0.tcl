@@ -1,6 +1,6 @@
 # Exporting core MIV_RV32IMA_L1_AXI_0 to TCL
 # Exporting Create design command for core MIV_RV32IMA_L1_AXI_0
-create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32IMA_L1_AXI:2.1.100} -component_name {MIV_RV32IMA_L1_AXI_C0} -params {\
+create_and_configure_core -core_vlnv {Microsemi:MiV:MIV_RV32IMA_L1_AXI:2.1.100} -download_core -component_name {MIV_RV32IMA_L1_AXI_C0} -params {\
 "MASTER_TYPE:0"  \
 "MEM_WID:5"  \
 "MMIO_WID:5"  \
