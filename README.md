@@ -1,7 +1,7 @@
 # RTG4 Development Kit Mi-V Sample Designs
 
 This repository contains Libero projects for the following soft core RISC-V processors:
-* MIV_RV32
+* MIV_RV32 (**M**|**C**|**F**)
 * MIV_RV32IMA_L1_AHB * 
 * MIV_RV32IMA_L1_AXI * 
 * MIV_RV32IMAF_L1_AHB *

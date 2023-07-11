@@ -29,10 +29,10 @@
 # MSIOD73PB1/GB12_23/CCC_NE0_CLKI2/SPWR_NE0_1_RX_STROBE_P
 # Dedicated (50MHz) -- CLK2_PAD
 
-# set_io -port_name {CLK2_PAD}  \
-	-pin_name AA39              	\
-	-fixed yes               	\
-	-DIRECTION INPUT
+set_io CLK2_PAD       \
+    -pinname AA39     \
+    -fixed yes        \
+    -DIRECTION INPUT
 
 # -- User I/O -- #
 
