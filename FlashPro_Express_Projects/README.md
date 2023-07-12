@@ -2,6 +2,17 @@
 
 This folder contains FlashPro Express v2023.1 projects for the RTG4 Development Kit Mi-V sample designs.
 
+## Notice
+Due to an issues found in the MIV_RV32 v3.1.100 with the MTVECs address, it is not recommended to use MIV_RV32 v3.1.100 for any FreeRTOS examples. A new version of the MIV_RV32 will be released to fix this issue. 
+There is also an issue when using fast interrupts where the return address can become corrupted, there is a change in entry.S file that can be applied as a workaround, but this will also be fixed in the same release as the MTVEC issue. 
+
+.macro STORE_CONTEXT  
+  addi sp, sp, -SP_SHIFT_OFFSET*REGBYTES  
+  SREG x1, 0 * REGBYTES(sp)  
+  SREG x1, 0 * REGBYTES(sp) // re-write the return address.  
+  SREG x2, 1 * REGBYTES(sp)  
+  SREG x3, 2 * REGBYTES(sp) 
+  
 ## FlashPro Express
 The programming files contained under this folder were exported from the designs in the Libero_Projects folder in this repository. Select the desired programming file (.job) and program your device using FlashPro Express.
 
